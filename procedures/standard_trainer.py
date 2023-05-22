@@ -50,6 +50,17 @@ class StandardTrainer:
             self.test_one_epoch(model, dataset)
             self.epoch_end_routine(model, dataset)
 
+    def train_n_epochs(self, model, dataset, n):
+        if self.current_epoch == 0:
+            self.training_start_routine(model, dataset)
+        for _ in range(n):
+            if self.current_epoch < self.epochs:
+                self.epoch_start_routine(model, dataset)
+                self.train_one_epoch(model, dataset)
+                self.epoch_mid_routine(model, dataset)
+                self.test_one_epoch(model, dataset)
+                self.epoch_end_routine(model, dataset)
+
     def epoch_start_routine(self, model, dataset):
         if self.need_to_resume_previous_state():
             self.load_state(model)
@@ -95,7 +106,6 @@ class StandardTrainer:
         model.train()
 
         for i, (data, target) in enumerate(dataset['train']):
-            print(self.scheduler.get_lr())
             if self.debug:
                 if i != 0:
                     break
