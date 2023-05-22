@@ -71,6 +71,11 @@ class StandardTrainer:
     def epoch_mid_routine(self, model, dataset):
         print()
 
+    def reset_lr(self):
+        self.current_epoch = 0
+        self.scheduler.last_epoch = -1
+        self.scheduler.step()
+
     def training_start_routine(self, model, dataset):
         print(self.name)
         self.current_epoch = 0
