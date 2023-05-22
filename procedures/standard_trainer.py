@@ -1,7 +1,6 @@
 import torch
 import sys
 import os
-import torch.nn.functional as F
 
 
 class StandardTrainer:
@@ -63,6 +62,10 @@ class StandardTrainer:
 
     def training_start_routine(self, model, dataset):
         print(self.name)
+        self.current_epoch = 0
+        self.scheduler.last_epoch = -1
+        self.scheduler.step()
+        self.save_path = os.path.join(self.output_path, self.name)
         if not os.path.isdir(self.output_path):
             try:
                 os.mkdir(self.output_path)
@@ -92,6 +95,7 @@ class StandardTrainer:
         model.train()
 
         for i, (data, target) in enumerate(dataset['train']):
+            print(self.scheduler.get_lr())
             if self.debug:
                 if i != 0:
                     break
