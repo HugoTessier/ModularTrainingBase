@@ -4,6 +4,12 @@ import sys
 
 
 def create(path):
+    '''
+    Loads a Python script at path and retrives its attribute called OBJECT. This attribute can be anything.
+
+    :param path: Path to the script to load.
+    :return: The OBJECT attribute, whatever it is.
+    '''
     sys.path.append(path)
     sys.path.append(os.path.dirname(path))
     name = os.path.splitext(os.path.basename(path))[0]
