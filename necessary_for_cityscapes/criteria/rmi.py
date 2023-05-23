@@ -118,7 +118,7 @@ def mean_var_test():
 class RMILoss(nn.Module):
 
     def __init__(self,
-                 num_classes=21,
+                 num_classes=19,
                  rmi_radius=3,
                  rmi_pool_way=0,
                  rmi_pool_size=3,
@@ -140,6 +140,8 @@ class RMILoss(nn.Module):
         self.name = 'RMILoss'
 
     def forward(self, logits_4D, labels_4D):
+        if logits_4D.shape[-1] != labels_4D.shape[-1] or logits_4D.shape[-2] != labels_4D.shape[-2]:
+            logits_4D = F.interpolate(logits_4D, size=labels_4D.shape[-2:])
         loss = self.forward_sigmoid(logits_4D, labels_4D)
         return loss
 
