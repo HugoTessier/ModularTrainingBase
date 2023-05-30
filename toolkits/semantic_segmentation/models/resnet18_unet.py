@@ -1,4 +1,4 @@
-from semantic_segmentation_toolkit.models.utils.resnet_unet import resnet18_unet
+from toolkits.semantic_segmentation.models.utils.resnet_unet import resnet18_unet
 
 OBJECT = resnet18_unet(num_classes=19,
                       pretrained_encoder=True,
