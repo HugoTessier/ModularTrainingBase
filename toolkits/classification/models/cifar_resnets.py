@@ -87,16 +87,16 @@ class BasicBlock(nn.Module):
 
 
 class ResNet(nn.Module):
-    def __init__(self, block, num_blocks, num_classes=10):
+    def __init__(self, block, num_blocks, num_classes=10, in_planes=16):
         super(ResNet, self).__init__()
-        self.in_planes = 16
+        self.in_planes = in_planes
 
         self.conv1 = nn.Conv2d(3, 16, kernel_size=3, stride=1, padding=1, bias=False)
         self.bn1 = nn.BatchNorm2d(16)
-        self.layer1 = self._make_layer(block, 16, num_blocks[0], stride=1)
-        self.layer2 = self._make_layer(block, 32, num_blocks[1], stride=2)
-        self.layer3 = self._make_layer(block, 64, num_blocks[2], stride=2)
-        self.linear = nn.Linear(64, num_classes)
+        self.layer1 = self._make_layer(block, in_planes, num_blocks[0], stride=1)
+        self.layer2 = self._make_layer(block, in_planes*2, num_blocks[1], stride=2)
+        self.layer3 = self._make_layer(block, in_planes*4, num_blocks[2], stride=2)
+        self.linear = nn.Linear(in_planes*4, num_classes)
 
         self.apply(_weights_init)
 
@@ -120,25 +120,25 @@ class ResNet(nn.Module):
         return out
 
 
-def resnet20():
-    return ResNet(BasicBlock, [3, 3, 3])
+def resnet20(in_planes=16):
+    return ResNet(BasicBlock, [3, 3, 3], in_planes=in_planes)
 
 
-def resnet32():
-    return ResNet(BasicBlock, [5, 5, 5])
+def resnet32(in_planes=16):
+    return ResNet(BasicBlock, [5, 5, 5], in_planes=in_planes)
 
 
-def resnet44():
-    return ResNet(BasicBlock, [7, 7, 7])
+def resnet44(in_planes=16):
+    return ResNet(BasicBlock, [7, 7, 7], in_planes=in_planes)
 
 
-def resnet56():
-    return ResNet(BasicBlock, [9, 9, 9])
+def resnet56(in_planes=16):
+    return ResNet(BasicBlock, [9, 9, 9], in_planes=in_planes)
 
 
-def resnet110():
-    return ResNet(BasicBlock, [18, 18, 18])
+def resnet110(in_planes=16):
+    return ResNet(BasicBlock, [18, 18, 18], in_planes=in_planes)
 
 
-def resnet1202():
-    return ResNet(BasicBlock, [200, 200, 200])
+def resnet1202(in_planes=16):
+    return ResNet(BasicBlock, [200, 200, 200], in_planes=in_planes)

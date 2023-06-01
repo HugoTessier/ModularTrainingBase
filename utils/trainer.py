@@ -139,7 +139,7 @@ class Trainer:
         message += f'{self.criterion.name} loss = {rounded_loss}, '
         for k, m in enumerate(self.metrics):
             rounded_metric = round(float(metrics_results[k]) / ((current_step + 1) * dataset.batch_size), 3)
-            message += f'{m.name} = {rounded_metric}\t'
+            message += f'{m.name} = {rounded_metric}    '
         message += '           '
         sys.stdout.write(message)
 
@@ -165,7 +165,7 @@ class Trainer:
             global_loss += loss.item()
 
             self._progress_message('Train', dataset['train'], global_loss, results, i)
-            self._save_results('Train', dataset['test'], global_loss, results)
+        self._save_results('Train', dataset['test'], global_loss, results)
 
     def _test_one_epoch(self, model, dataset):
         model.eval()
@@ -185,7 +185,7 @@ class Trainer:
                 global_loss += loss.item()
 
                 self._progress_message('Test', dataset['test'], global_loss, results, i)
-                self._save_results('Test', dataset['test'], global_loss, results)
+            self._save_results('Test', dataset['test'], global_loss, results)
 
     def _save_results(self, name, dataset, loss, metrics_results):
         with open(self.save_path + '_results.txt', 'a') as f:
